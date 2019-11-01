@@ -1,0 +1,53 @@
+service:
+  name: corgi-photos
+
+plugins:
+  - serverless-nuxt/plugin
+
+resources:
+  Resources:
+    AssetsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.nuxt.bucketName}
+        CorsConfiguration:
+          CorsRules:
+            - AllowedMethods:
+              - GET
+              - HEAD
+              AllowedOrigins:
+              - "*"
+
+provider:
+  name: aws
+  region: ap-northeast-2
+  stage: ${opt:stage, 'dev'}
+  runtime: nodejs10.x
+  environment:
+    NODE_ENV: ${file(.env.${self:provider.stage}.yml):NODE_ENV}
+    STAGE: ${self:provider.stage}
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 's3:GetObject'
+        - 's3:PutObject'
+      Resource:
+        - arn:aws:s3:::${self:custom.nuxt.bucketName}
+        - arn:aws:s3:::${self:custom.nuxt.bucketName}/*
+ 
+
+custom:
+  nuxt:
+    version: v0.0.1-alpha
+    bucketName: corgi-photos-${self:provider.stage}
+
+functions:
+  photo:
+    handler: photo.index
+    events:
+      - http: GET /{width}/{height}
+  nuxt:
+    handler: handler.render
+    events:
+      - http: ANY /
+  

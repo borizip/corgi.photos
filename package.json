@@ -6,10 +6,16 @@
     "dev": "nuxt"
   },
   "dependencies": {
-    "nuxt": "^2.0.0"
+    "aws-sdk": "^2.561.0",
+    "normalize.css": "^8.0.1",
+    "nuxt-start": "^2.10.2",
+    "serverless-nuxt": "^0.2.1",
+    "sharp": "^0.23.2"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.34",
     "node-sass": "^4.13.0",
+    "nuxt": "^2.10.2",
     "sass-loader": "^8.0.0"
   }
 }

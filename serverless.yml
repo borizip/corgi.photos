@@ -45,7 +45,7 @@ functions:
   photo:
     handler: photo.index
     events:
-      - http: GET /{width}/{height}
+      - http: GET /{options+}
   nuxt:
     handler: handler.render
     events:

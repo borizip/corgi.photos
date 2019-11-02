@@ -1,42 +1,55 @@
 const { S3 } = require('aws-sdk')
 const sharp = require('sharp')
 
-const IMAGE_COUNT = 16
+const IMAGE_COUNT = 56
+
+const Bucket = `corgi-photos-${process.env.STAGE}`
 
 const s3 = new S3()
 
 async function index(event) {
-  const query = event.queryStringParameters || {}
+  const options = event.pathParameters.options.split('/')
 
-  const width = Math.min(+event.pathParameters.width, 1000)
-  const height = Math.min(+event.pathParameters.height, 1000)
+  let grayscale = false
+  if (options[0] === 'g') {
+    options.shift() 
+    grayscale = true
+  }
+
+  if (options.length !== 2) {
+    return {
+      statusCode: 404,
+    }
+  }
+
+  const width = Math.min(+options[0], 1920)
+  const height = Math.min(+options[1], 1920)
+
   const seed = ~~(Math.random() * IMAGE_COUNT)
 
-  const path = `images/${seed}__${width}x${height}.jpeg`
-  try {
-    await s3.headObject({
-      Bucket: `corgi-photos-${process.env.STAGE}`,
-      Key: path,
-    }).promise()
-  } catch (e) {
-    const { Body } = await s3.getObject({
-      Bucket: `corgi-photos-${process.env.STAGE}`,
-      Key: `images/${seed}.jpeg`,
-    }).promise()
+  let basename = `images/${seed}__${width}x${height}`
+  if (grayscale) {
+    basename += '__g'
+  }
+  const Key = `${basename}.jpeg`
 
+  try {
+    await s3.headObject({ Bucket, Key }).promise()
+  } catch (e) {
+    // source
+    const { Body } = await s3.getObject({ Bucket, Key: `images/${seed}.jpeg` }).promise()
+    let src = sharp(Body).resize(width, height)
+    if (grayscale) {
+      src = src.grayscale()
+    }
     await s3.putObject({
-      Bucket: `corgi-photos-${process.env.STAGE}`,
-      Key: path,
-      Body: await sharp(Body)
-        .resize(width, height)
-        .toBuffer()
+      Bucket,
+      Key,
+      Body: await src.toBuffer()
     }).promise()
   }
 
-  const { Body } = await s3.getObject({
-    Bucket: `corgi-photos-${process.env.STAGE}`,
-    Key: path,
-  }).promise()
+  const { Body } = await s3.getObject({ Bucket, Key }).promise()
 
   return {
     statusCode: 200,

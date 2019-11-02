@@ -1,9 +1,11 @@
 @import "normalize.css";
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR|Raleway:300&display=swap');
+
+// https://www.colourlovers.com/palette/117412/Corgi_Fur
 
 body {
   font-family: 'Noto Sans KR', sans-serif;
-  color: #333;
+  color: #342721;
 }
 
 .container {
@@ -14,31 +16,41 @@ body {
 
 .section-header {
   .title {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
     text-align: center;
     font-size: 3rem;
   }
 }
 
 .section-description {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  background: #E7CBB1;
   .container {
     display: flex;
     flex-flow: column;
     align-items: center;
   }
-  .description {
-    text-align: center;
-  }
   .link {
-    margin-top: 2rem;
     margin-left: auto;
     margin-right: auto;
-    padding: 1rem;
-    background: #eee;
+    box-sizing: border-box;
+    padding: 1rem .25rem .875rem;
+    line-height: 1.5;
+    border: 0;
+    background: #ffffff;
+    text-align: center;
+    width: 300px;
+    &:focus {
+      outline: 0;
+    }
   }
 }
 
 .section-images {
-  margin-top: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 
   .container {
     display: flex;
@@ -47,6 +59,11 @@ body {
   }
   
   .image {
+    max-width: 100%;
     padding: .5rem;
-  }  
+    > img {
+      display: block;
+      max-width: 100%;
+    }
+  }
 }

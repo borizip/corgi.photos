@@ -2,7 +2,7 @@ service:
   name: corgi-photos
 
 plugins:
-  - serverless-nuxt/plugin
+  - serverless-nuxt-plugin
 
 resources:
   Resources:
@@ -34,11 +34,10 @@ provider:
       Resource:
         - arn:aws:s3:::${self:custom.nuxt.bucketName}
         - arn:aws:s3:::${self:custom.nuxt.bucketName}/*
- 
 
 custom:
   nuxt:
-    version: v0.0.1-alpha
+    version: v0.2.0
     bucketName: corgi-photos-${self:provider.stage}
 
 functions:

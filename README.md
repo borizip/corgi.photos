@@ -1,6 +1,5 @@
-# Corgi Ipsum
+# Corgi photos
 
-참고사이트
+[https://corgi.photos](https://corgi.photos)
 
-- https://placeimg.com/
-- https://picsum.photos/
+Lorem Picsum Service made of lovely corgi photos.

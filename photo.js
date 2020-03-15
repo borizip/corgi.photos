@@ -1,5 +1,8 @@
 const { S3 } = require('aws-sdk')
 const sharp = require('sharp')
+const axios = require('axios')
+const qs = require('querystring')
+const crypto = require('crypto')
 
 const IMAGE_COUNT = 35
 
@@ -27,6 +30,33 @@ async function index(event) {
 
   const seed = ~~(Math.random() * IMAGE_COUNT)
 
+  const headers = Object.entries(event.headers || {})
+    .map(([key, value]) => [key.toLowerCase(), value])
+    .reduce((carry, [key, value]) => (carry[key] = value, carry), {})
+
+  const fingerprint = [
+    headers['user-agent'],
+    headers['cookie'],
+    headers['accept-encoding'],
+    headers['accept-language'],
+  ].join('__')
+  const clientId = crypto.createHash('sha256').update(fingerprint).digest('hex')
+
+  const axiosPromise = axios.post('http://www.google-analytics.com/collect', qs.stringify({
+    v: 1,
+    tid: 'UA-151383765-1',
+    cid: clientId,
+
+    t: 'pageview',
+    dr: headers.referer,
+    dh: headers.host || 'corgi.photos',
+    dp: (event.path || '/') + (Object.keys(event.queryStringParameters || {}).length ? `?${qs.stringify(event.queryStringParameters)}` : ''),
+    dt: `Corgi Photo ${width} x ${height}${grayscale ? ' Grayscale' : ''}`,
+
+    ua: headers['user-agent'],
+    ul: (headers['accept-language'] || '').split(',').filter(n => n)[0],
+  }))
+
   let basename = `images/${seed}__${width}x${height}`
   if (grayscale) {
     basename += '__g'
@@ -50,6 +80,8 @@ async function index(event) {
   }
 
   const { Body } = await s3.getObject({ Bucket, Key }).promise()
+
+  await axiosPromise // :-)
 
   return {
     statusCode: 200,

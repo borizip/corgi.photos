@@ -9,6 +9,7 @@
   "dependencies": {
     "@nuxtjs/google-gtag": "^1.0.4",
     "aws-sdk": "^2.561.0",
+    "axios": "^0.19.2",
     "core-js": "^2.6.11",
     "lodash.debounce": "^4.0.8",
     "normalize.css": "^8.0.1",

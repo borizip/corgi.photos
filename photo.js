@@ -55,6 +55,7 @@ async function index(event) {
 
     ua: headers['user-agent'],
     ul: (headers['accept-language'] || '').split(',').filter(n => n)[0],
+    uip: (headers['x-forwarded-for'] || '').split(',').map(n => n.trim()).filter(n => n)[0],
   }))
 
   let basename = `images/${seed}__${width}x${height}`

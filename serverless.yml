@@ -4,6 +4,10 @@ service:
 plugins:
   - serverless-nuxt-plugin
 
+package:
+  exclude:
+    - sources/**
+
 resources:
   Resources:
     AssetsBucket:

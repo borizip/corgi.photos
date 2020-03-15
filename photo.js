@@ -1,7 +1,7 @@
 const { S3 } = require('aws-sdk')
 const sharp = require('sharp')
 
-const IMAGE_COUNT = 56
+const IMAGE_COUNT = 35
 
 const Bucket = `corgi-photos-${process.env.STAGE}`
 
@@ -37,7 +37,7 @@ async function index(event) {
     await s3.headObject({ Bucket, Key }).promise()
   } catch (e) {
     // source
-    const { Body } = await s3.getObject({ Bucket, Key: `images/${seed}.jpeg` }).promise()
+    const { Body } = await s3.getObject({ Bucket, Key: `sources/${seed}.jpeg` }).promise()
     let src = sharp(Body).resize(width, height)
     if (grayscale) {
       src = src.grayscale()

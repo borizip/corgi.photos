@@ -53,4 +53,5 @@ functions:
     handler: handler.render
     events:
       - http: ANY /
-  
+      - http: GET /favicon.ico
+      - http: GET /robots.txt

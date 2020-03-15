@@ -42,7 +42,7 @@ async function index(event) {
   ].join('__')
   const clientId = crypto.createHash('sha256').update(fingerprint).digest('hex')
 
-  const axiosPromise = axios.post('http://www.google-analytics.com/collect', qs.stringify({
+  const axiosPromise = axios.post('https://www.google-analytics.com/collect', qs.stringify({
     v: 1,
     tid: 'UA-151383765-1',
     cid: clientId,

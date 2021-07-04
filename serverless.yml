@@ -74,7 +74,7 @@ resources:
 
 functions:
   photo:
-    handler: photo.index
+    handler: photo.render
     events:
       - http: GET /{options+}
   nuxt:

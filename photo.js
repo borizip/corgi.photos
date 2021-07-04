@@ -10,8 +10,15 @@ const Bucket = `corgi-photos-${process.env.STAGE}`
 
 const s3 = new S3()
 
-async function index(event) {
+async function render(event) {
   const options = event.pathParameters.options.split('/')
+
+  let isSeedEnabled = false
+  let seed = ~~(Math.random() * IMAGE_COUNT)
+  if (options.length === 4 || (options.length === 3 && options[0] !== 'g')) {
+    isSeedEnabled = true
+    seed = (+`0x${crypto.createHash('sha1').update(options.shift()).digest('hex').slice(0, 8)}`) % IMAGE_COUNT
+  }
 
   let grayscale = false
   if (options[0] === 'g') {
@@ -28,11 +35,7 @@ async function index(event) {
   const width = Math.min(+options[0], 1920)
   const height = Math.min(+options[1], 1920)
 
-  const seed = ~~(Math.random() * IMAGE_COUNT)
-
-  const headers = Object.entries(event.headers || {})
-    .map(([key, value]) => [key.toLowerCase(), value])
-    .reduce((carry, [key, value]) => (carry[key] = value, carry), {})
+  const headers = Object.fromEntries(Object.entries(event.headers || {}).map(([key, value]) => [key.toLowerCase(), value]))
 
   const fingerprint = [
     headers['user-agent'],
@@ -95,5 +98,5 @@ async function index(event) {
 }
 
 module.exports = {
-  index,
+  render,
 }

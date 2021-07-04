@@ -35,8 +35,6 @@ dist
 .DS_Store
 
 .envrc
-
-.env.dev.yml
-.env.prod.yml
+.env-cmdrc.js
 
 sources/

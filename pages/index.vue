@@ -1,28 +1,28 @@
 <template>
-  <div class="page">
-    <div class="section section-header">
-      <div class="container">
-        <h1 class="title">Corgi Ipsum</h1>
+  <div>
+    <div class="py-8">
+      <div class="container mx-auto">
+        <h1 class="text-2xl text-center">Corgi Ipsum</h1>
       </div>
     </div>
-    <div class="section section-description">
-      <div class="container">
-        <input type="text" class="link" v-model="inputLink1" />
+    <div class="bg-blue-200 py-12">
+      <div class="container mx-auto flex justify-center">
+        <input type="text" class="px-4 py-2 max-w-xs w-full focus:ring-0" v-model="inputLink1" />
       </div>
     </div>
-    <div class="section section-images">
-      <div class="container">
-        <div class="image" v-for="i in 8" :key="i"><img :src="`${link1}?rand=${i}`" /></div>
+    <div class="py-12">
+      <div class="container mx-auto flex flex-wrap gap-4 justify-center">
+        <div v-for="i in 8" :key="i"><img :src="`${link1}?rand=${i}`" /></div>
       </div>
     </div>
-    <div class="section section-description">
-      <div class="container">
-        <input type="text" class="link" v-model="inputLink2" />
+    <div class="bg-blue-200 py-12">
+      <div class="container mx-auto flex justify-center">
+        <input type="text" class="px-4 py-2 max-w-xs w-full focus:ring-0" v-model="inputLink2" />
       </div>
     </div>
-    <div class="section section-images">
-      <div class="container">
-        <div class="image" v-for="i in 8" :key="i"><img :src="`${link2}?rand=${i}`" /></div>
+    <div class="py-12">
+      <div class="container mx-auto flex flex-wrap gap-4 justify-center">
+        <div v-for="i in 8" :key="i"><img :src="`${link2}?rand=${i}`" /></div>
       </div>
     </div>
   </div>

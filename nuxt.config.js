@@ -1,9 +1,6 @@
 
 
-const STAGE = process.env.STAGE || 'dev'
-
 module.exports = {
-  mode: 'universal',
   head: {
     title: 'Corgi Photos - Lorem Ipsum Gallery',
     meta: [
@@ -17,21 +14,21 @@ module.exports = {
   },
   loading: { color: '#fff' },
   css: [
-    '~/assets/scss/home.scss',
+    '~/assets/css/home.css',
   ],
   plugins: [
   ],
   buildModules: [
+    '@nuxtjs/tailwindcss',
   ],
   modules: [
     '@nuxtjs/google-gtag',
   ],
   build: {
-    extend (config, ctx) {
-    }
+    publicPath: process.env.SERVERLESS_NUXT_PUBLIC_PATH,
   },
   'google-gtag': {
     id: 'UA-151383765-1',
-    debug: STAGE !== 'prod',
+    debug: process.env.NODE_ENV !== 'production',
   },
 }

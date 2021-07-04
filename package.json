@@ -3,27 +3,32 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "deploy": "sls deploy --stage prod",
+    "deploy:dev": "env-cmd -e dev sls deploy --stage dev",
+    "deploy:prod": "env-cmd -e prod sls deploy --stage prod",
     "dev": "nuxt"
   },
   "dependencies": {
     "@nuxtjs/google-gtag": "^1.0.4",
-    "aws-sdk": "^2.561.0",
     "axios": "^0.19.2",
     "core-js": "^2.6.11",
     "lodash.debounce": "^4.0.8",
-    "normalize.css": "^8.0.1",
-    "nuxt-start": "^2.10.2",
-    "serverless-nuxt": "^1.1.0",
-    "sharp": "^0.23.4"
+    "nuxt-aws-lambda": "^1.5.0",
+    "nuxt-start": "^2.15.7",
+    "sharp": "^0.28.3"
   },
   "devDependencies": {
+    "@nuxtjs/tailwindcss": "^4.2.0",
     "@types/aws-lambda": "^8.10.34",
+    "autoprefixer": "^10.2.6",
+    "aws-sdk": "^2.939.0",
+    "env-cmd": "^10.1.0",
     "glob": "^7.1.6",
-    "node-sass": "^4.13.0",
-    "nuxt": "^2.10.2",
-    "sass-loader": "^8.0.0",
-    "serverless": "^1.63.0",
-    "serverless-nuxt-plugin": "^1.1.0"
+    "nuxt": "^2.15.7",
+    "postcss": "^8.3.5",
+    "serverless": "^2.50.0",
+    "serverless-apigw-binary": "^0.4.4",
+    "serverless-domain-manager": "^5.1.0",
+    "serverless-nuxt-plugin": "1.5",
+    "tailwindcss": "^2.2.4"
   }
 }

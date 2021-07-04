@@ -1,12 +1,62 @@
-service:
-  name: corgi-photos
+service: corgi-photos
 
 plugins:
   - serverless-nuxt-plugin
+  - serverless-apigw-binary
+  - serverless-domain-manager
+
+provider:
+  name: aws
+  region: ap-northeast-2
+  stage: ${opt:stage, 'dev'}
+  runtime: nodejs14.x
+  lambdaHashingVersion: 20201221
+  environment:
+    NODE_ENV: ${env:NODE_ENV}
+    STAGE: ${self:provider.stage}
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 's3:GetObject'
+            - 's3:PutObject'
+          Resource:
+            - arn:aws:s3:::${self:custom.nuxt.bucketName}
+            - arn:aws:s3:::${self:custom.nuxt.bucketName}/*
 
 package:
-  exclude:
-    - sources/**
+  patterns:
+    - '!assets/**'
+    - '!components/**'
+    - '!pages/**'
+    - '!node_modules/**/*.otf'
+    - '!node_modules/**/*.eot'
+    - '!node_modules/**/*.svg'
+    - '!node_modules/**/*.ttf'
+    - '!node_modules/**/*.woff'
+    - '!node_modules/**/*.woff2'
+    - '!node_modules/**/*.less'
+    - '!node_modules/**/*.sass'
+    - '!node_modules/**/*.scss'
+    - '!node_modules/**/*.vue'
+    - '!node_modules/**/*.coffee'
+    - '!node_modules/**/*.ts'
+    - '!node_modules/**/*.tsx'
+    - '!node_modules/**/*.ts.map'
+    - '!node_modules/**/*.js.map'
+    - '!node_modules/**/*.css.map'
+
+custom:
+  customDomain:
+    domainName: ${env:DOMAIN_NAME}
+    certificateArn: ${env:ACM_CERTIFICATE_ARN}
+  apigwBinary:
+    types:
+      - 'image/*'
+  nuxt:
+    version: v0.2.0
+    bucketName: corgi-photos-${self:provider.stage}
 
 resources:
   Resources:
@@ -21,28 +71,6 @@ resources:
               - HEAD
               AllowedOrigins:
               - "*"
-
-provider:
-  name: aws
-  region: ap-northeast-2
-  stage: ${opt:stage, 'dev'}
-  runtime: nodejs12.x
-  environment:
-    NODE_ENV: ${file(.env.${self:provider.stage}.yml):NODE_ENV}
-    STAGE: ${self:provider.stage}
-  iamRoleStatements:
-    - Effect: 'Allow'
-      Action:
-        - 's3:GetObject'
-        - 's3:PutObject'
-      Resource:
-        - arn:aws:s3:::${self:custom.nuxt.bucketName}
-        - arn:aws:s3:::${self:custom.nuxt.bucketName}/*
-
-custom:
-  nuxt:
-    version: v0.2.0
-    bucketName: corgi-photos-${self:provider.stage}
 
 functions:
   photo:

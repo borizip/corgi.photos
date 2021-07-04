@@ -10,7 +10,6 @@ Lorem Picsum Service made of lovely corgi photos.
 ```bash
 npm install
 rm -rf node_modules/sharp
-npm install --arch=x64 --platform=linux --target=12.0.0 sharp
-
-npx sls deploy --stage prod
+docker run --rm -v "$PWD":/var/task lambci/lambda:build-nodejs12.x npm ci
+npm run deploy:prod
 ```
